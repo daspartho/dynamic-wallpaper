@@ -38,3 +38,12 @@ def set_wallpaper(img_path):
         ctypes.windll.user32.SystemParametersInfoA(20,0,img_path, 0)
     elif platform.system()=='Darwin':
         os.system(f"osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file {img_path}'")
+
+def main():
+    lat, lon = get_lat_lon()
+    weather_desc = get_weather(lat, lon)
+    img_path = get_wallpaper(weather_desc)
+    set_wallpaper(img_path)
+
+if __name__=="__main__":
+    main()
