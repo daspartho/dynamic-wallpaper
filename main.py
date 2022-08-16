@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import random
 import platform
+import time
 
 load_dotenv()
 
@@ -46,4 +47,6 @@ def main():
     set_wallpaper(img_path)
 
 if __name__=="__main__":
-    main()
+    while True:
+        main()
+        time.sleep(300)
