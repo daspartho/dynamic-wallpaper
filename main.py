@@ -3,6 +3,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import random
+import platform
 
 load_dotenv()
 
@@ -24,5 +25,16 @@ def get_wallpaper(weather_desc):
     data = response.json()
     img_url = data['results'][random.randint(0,29)]['links']['download']
     img_data = requests.get(img_url).content
-    with open('wallpaper.jpg', 'wb') as handler:
+    img_path = os.path.expanduser('~/wallpaper.jpg')
+    with open(img_path, 'wb') as handler:
         handler.write(img_data)
+    return img_path
+
+def set_wallpaper(img_path):
+    if platform.system()=='Linux':
+        os.system(f"gsettings set org.gnome.desktop.background picture-uri file:{img_path}")
+    elif platform.system()=='Windows':
+        import ctypes
+        ctypes.windll.user32.SystemParametersInfoA(20,0,img_path, 0)
+    elif platform.system()=='Darwin':
+        os.system(f"osascript -e 'tell application \"Finder\" to set desktop picture to POSIX file {img_path}'")
